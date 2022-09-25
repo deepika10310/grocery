@@ -1,0 +1,9 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.grocery.on.wheels.dao.VanMapper">
+	<select id="getVans" resultType="com.grocery.on.wheels.model.Van">
+		select van_id as vanId, van_name as vanName from van
+	</select>
+</mapper>

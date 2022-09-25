@@ -1,0 +1,35 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.grocery.on.wheels.dao.ItemMapper">
+<insert id="addItem" parameterType="com.grocery.on.wheels.model.Item">
+	INSERT INTO item_info (item_id, item_name, item_code, item_unit, item_unit_count, item_icon, item_qrbar_code, create_dt, create_id, update_dt, update_id)
+	 VALUES (#{itemId}, #{itemName}, #{itemCode}, #{itemUnit}, #{itemUnitCount}, #{itemIcon}, #{itemQrBarCode}, now(), 'CID', now(), 'UID');
+</insert>
+
+<insert id="addItemPrice" parameterType="com.grocery.on.wheels.model.Item">
+	INSERT INTO item_price_map (item_id, mrp, cp, sp)
+	 VALUES 
+	 <foreach collection="itemPrice" item="price" index="index" open="(" separator="),("  close=")">
+            #{itemId},
+            #{price.mrp},
+            #{price.cp},
+            #{price.sp}
+       </foreach>
+	
+</insert>
+
+<insert id="addInvItemMap">
+INSERT INTO inventory_item_map (inventory_id, item_id, mrp, item_count) 
+VALUES 
+ <foreach collection="item.itemPrice" item="price" index="index" open="(" separator="),("  close=")">
+     #{inventoryId},
+     #{item.itemId},
+     #{price.mrp},
+     #{price.itemCount}
+</foreach>
+
+</insert>
+
+</mapper>

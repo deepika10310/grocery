@@ -1,0 +1,11 @@
+package com.grocery.on.wheels.service;
+
+import java.util.List;
+
+import com.grocery.on.wheels.model.Van;
+
+public interface VanService {
+
+	List<Van> getVans();
+
+}
