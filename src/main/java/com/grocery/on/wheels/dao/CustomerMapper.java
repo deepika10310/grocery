@@ -3,6 +3,7 @@ package com.grocery.on.wheels.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.grocery.on.wheels.model.Customer;
 
@@ -14,7 +15,7 @@ public interface CustomerMapper {
 	void addCustomer(Customer customer);
 	void addCustomerAddress(Customer customer);
 
-	List<Customer> findCustomers(String string);
+	List<Customer> findCustomers(@Param("searchText") String searchText);
 
 	
 }

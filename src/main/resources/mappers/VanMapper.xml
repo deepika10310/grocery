@@ -3,7 +3,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.grocery.on.wheels.dao.VanMapper">
-	<select id="getVans" resultType="com.grocery.on.wheels.model.Van">
-		select van_id as vanId, van_name as vanName from van
+	<resultMap type="com.grocery.on.wheels.model.Item" id="vanItemMap">
+		<id property="itemId" column="itemId"/>
+		<result property="domain" column="domain"/>
+		<result property="vanId" column="vanId"/>
+		<result property="itemName" column="itemName"/>
+		<result property="itemCode" column="itemCode"/>
+		<result property="itemUnit" column="itemUnit"/>
+		<result property="itemUnitCount" column="itemUnitCount"/>
+		<result property="itemIcon" column="itemIcon"/>
+		<result property="itemQrBarCode" column="itemQrBarCode"/>
+		<collection property="itemPrice" javaType="ArrayList" ofType="com.grocery.on.wheels.model.ItemPrice">
+			<result property="mrp" column="mrp"/>
+			<result property="cp" column="cp"/>
+			<result property="sp" column="sp"/>
+			<result property="itemCount" column="itemCount"/>
+		</collection>
+	</resultMap>
+	<select id="getVans" resultType="com.grocery.on.wheels.model.Van" parameterType="String">
+		select van_id as vanId, van_name as vanName from van where inventory_id = #{inventoryId}
+	</select>
+	<select id="getItems" resultMap="vanItemMap" parameterType="String">
+		SELECT vim.van_id as vanId, vim.item_id as itemId,
+			vim.count as itemCount, ii.item_name as itemName, ii.item_code as itemCode,
+			ii.item_unit as itemUnit, ii.item_unit_count as itemUnitCount,
+			ii.item_icon as itemIcon, ii.item_qrbar_code as itemQrBarCode,
+			ipm.mrp as mrp, ipm.cp as cp, ipm.sp as sp
+		FROM van_item_map vim
+			join item_info ii on (vim.item_id = ii.item_id and vim.van_id = #{vanID})
+			join item_price_map ipm on (ii.item_id = ipm.item_id and vim.mrp = ipm.mrp)
 	</select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.grocery.on.wheels.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.grocery.on.wheels.dao.SupplierMapper;
 import com.grocery.on.wheels.model.Supplier;
 import com.grocery.on.wheels.service.SupplierService;
+import com.grocery.on.wheels.util.GroceryUtil;
 
 @Service
 @Transactional
@@ -24,6 +26,7 @@ public class SupplierServiceImpl implements SupplierService {
 
 	@Override
 	public void addSupplier(Supplier supplier) {
+		supplier.setSupplierId("SPLR_" + GroceryUtil.getFormatDate(new Date()) );
 		supplierMapper.addSupplier(supplier);
 	}
 

@@ -1,0 +1,98 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.grocery.on.wheels.dao.GroceryTransactionMapper">
+<insert id="createInvoice" parameterType="com.grocery.on.wheels.model.Invoice">
+	INSERT INTO inventory_invoice (invoice_id, invoice_name, invoice_date)
+	 VALUES (#{invoiceId}, #{invoiceName},now());
+</insert>
+
+<insert id="saveInventoryTransactionInfo" parameterType="com.grocery.on.wheels.model.InventoryPurchaseTransaction">
+	INSERT INTO inventory_transaction (invoice_id, inventory_id, item_id, mrp, cp, sp, quantity, supplier_id, discount, other_charges, transaction_type, transaction_status, transaction_date)
+	 VALUES 
+	 <foreach collection="purchaseTransItem" item="item" index="index" open="(" separator="),("  close=")">
+			#{invoiceId},
+            #{inventoryId},
+            #{item.itemId},
+            #{item.mrp},
+			#{item.cp},
+			#{item.sp},
+            #{item.itemCount},
+			#{supplierId},
+			#{discount},
+			#{otherCharges},
+			#{transactionType},
+			#{transactionStatus},
+			now()
+       </foreach>
+</insert>
+
+<update id="updateInventoryStock" parameterType="com.grocery.on.wheels.model.InventoryPurchaseTransaction">
+	<foreach collection="purchaseTransItem" item="item" separator=";">
+		update inventory_item_map
+		set item_count = item_count + #{item.itemCount}
+		where inventory_id = #{inventoryId}
+		and item_id = #{item.itemId}
+		and mrp = #{item.mrp}
+	 </foreach>;
+</update>
+
+<insert id="saveVanTransactionInfo" parameterType="com.grocery.on.wheels.model.VanPurchaseTransaction">
+	INSERT INTO van_transaction (invoice_id, van_id, item_id, item_mrp, cp, sp, quantity, customer_id, discount, other_charges, transaction_type, transaction_status, transaction_date)
+	VALUES 
+	 <foreach collection="purchaseTransItem" item="item" index="index" open="(" separator="),("  close=")">
+			#{invoiceId},
+			#{vanId},
+            #{item.itemId},
+            #{item.mrp},
+			#{item.cp},
+			#{item.sp},
+            #{item.itemCount},
+			#{customerId},
+			#{discount},
+			#{otherCharges},
+			#{transactionType},
+			#{transactionStatus},
+			now()
+       </foreach>
+</insert>
+
+<update id="updateInventoryStockSale" parameterType="com.grocery.on.wheels.model.VanPurchaseTransaction">
+	<foreach collection="purchaseTransItem" item="purchItem" separator=";">
+		update inventory_item_map 
+		set item_count = item_count - #{purchItem.itemCount}	
+		where inventory_id = #{inventoryId} and item_id=#{purchItem.itemId} and 
+		mrp = #{purchItem.mrp}
+	</foreach>;
+</update>
+
+<update id="updateVanStockPurchase" parameterType="com.grocery.on.wheels.model.VanPurchaseTransaction">
+	<foreach collection="purchaseTransItem" item="purchItem" separator=";">
+		update van_item_map 
+		set count = count + #{purchItem.itemCount}	
+		where van_id = #{vanId} and item_id=#{purchItem.itemId} and 
+		mrp = #{purchItem.mrp}
+	</foreach>;
+</update>
+<update id="updateVanStockSale" parameterType="com.grocery.on.wheels.model.VanPurchaseTransaction">
+	<foreach collection="purchaseTransItem" item="purchItem" separator=";">
+		update van_item_map 
+		set count = count - #{purchItem.itemCount}	
+		where van_id = #{vanId} and item_id=#{purchItem.itemId} and 
+		mrp = #{purchItem.mrp}
+	</foreach>;
+</update>
+
+<insert id="addVanItemMap" parameterType="com.grocery.on.wheels.model.InventoryPurchaseTransaction">
+INSERT IGNORE INTO van_item_map (van_id, item_id, mrp, count)
+	 VALUES 
+	 <foreach collection="purchaseTransItem" item="item" index="index" open="(" separator="),("  close=")">
+			#{vanId},
+            #{item.itemId},
+            #{item.mrp},
+			0
+       </foreach>
+</insert>
+
+</mapper>

@@ -21,8 +21,8 @@
 	<select id="findCustomers" resultMap="customerMap" parameterType="String">
 		SELECT c.customer_id as customerId, c.customer_name as customerName,
 		ca.customer_address as customerAddress, ca.customer_mob as customerMob FROM customer c
- 		join customer_address ca on (c.customer_id = ca.customer_id and (c.customer_name like searchText
- 		or ca.customer_address like searchText or ca.mob like searchText)
+ 		join customer_address ca on (c.customer_id = ca.customer_id and (c.customer_name like #{searchText}
+ 		or ca.customer_address like #{searchText} or ca.customer_mob like #{searchText})
  		)
 	</select>
 	

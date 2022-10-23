@@ -21,4 +21,8 @@ public interface GroceryTransactionMapper {
 
 	void updateVanStockSale(VanPurchaseTransaction vanPurchaseTransaction);
 
+	void updateInventoryStockSale(VanPurchaseTransaction vanPurchaseTransaction);
+
+	void addVanItemMap(VanPurchaseTransaction vanPurchaseTransaction);
+
 }

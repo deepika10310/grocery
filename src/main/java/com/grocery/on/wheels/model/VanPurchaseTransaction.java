@@ -4,15 +4,16 @@ import java.util.Date;
 import java.util.List;
 
 public class VanPurchaseTransaction {
+	private String inventoryId;
 	private String invoiceId;
 	private String invoiceName;
 	private String vanId;
 	private List<VanPurchaseTransactionItem> purchaseTransItem;
-	private String supplierId;
+	private String customerId;
 	private String discount;
 	private String otherCharges;
-	private String transactionType;//INVOICE/CANCEL/REFUND
-	private String transactionStatus;//SUCCESS/FAIL
+	private String transactionType;//CREDIT/DEBIT
+	private String transactionStatus;//INVOICE/CANCEL/REFUND
 	private Date transactionDate;
 	public String getInvoiceId() {
 		return invoiceId;
@@ -31,12 +32,6 @@ public class VanPurchaseTransaction {
 	}
 	public void setPurchaseTransItem(List<VanPurchaseTransactionItem> purchaseTransItem) {
 		this.purchaseTransItem = purchaseTransItem;
-	}
-	public String getSupplierId() {
-		return supplierId;
-	}
-	public void setSupplierId(String supplierId) {
-		this.supplierId = supplierId;
 	}
 	public String getDiscount() {
 		return discount;
@@ -73,5 +68,17 @@ public class VanPurchaseTransaction {
 	}
 	public void setInvoiceName(String invoiceName) {
 		this.invoiceName = invoiceName;
+	}
+	public String getInventoryId() {
+		return inventoryId;
+	}
+	public void setInventoryId(String inventoryId) {
+		this.inventoryId = inventoryId;
+	}
+	public String getCustomerId() {
+		return customerId;
+	}
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
 }

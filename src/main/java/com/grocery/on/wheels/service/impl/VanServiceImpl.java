@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.grocery.on.wheels.dao.VanMapper;
+import com.grocery.on.wheels.model.Item;
 import com.grocery.on.wheels.model.Van;
 import com.grocery.on.wheels.service.VanService;
 
@@ -18,8 +19,13 @@ public class VanServiceImpl implements VanService {
 	VanMapper vanMapper;
 	
 	@Override
-	public List<Van> getVans() {
-		return vanMapper.getVans();
+	public List<Van> getVans(String inventoryId) {
+		return vanMapper.getVans(inventoryId);
+	}
+
+	@Override
+	public List<Item> getItems(String vanId) {
+		return vanMapper.getItems(vanId);
 	}
 
 }

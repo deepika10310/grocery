@@ -32,4 +32,29 @@ VALUES
 
 </insert>
 
+<update id="editItem">
+	update item_info
+	set 
+	item_name = #{item.itemName}, 
+	item_code = #{item.itemCode}, 
+	item_unit = #{item.itemUnit}, 
+	item_unit_count = #{item.itemUnitCount}, 
+	<if test="iconFileUpdate == true">
+	item_icon = #{item.itemIcon}, 
+	</if>
+	<if test="qrFileUpdate == true">
+	item_qrbar_code = #{item.itemQrBarCode}, 
+	</if>
+	update_dt = now()
+	where item_id = #{item.itemId}
+</update>
+
+<delete id="deleteItemPrice" parameterType="com.grocery.on.wheels.model.Item">
+	delete from item_price_map where item_id = #{itemId} 
+</delete>
+
+<delete id="deleteInvItemMap">
+	delete from inventory_item_map where item_id = #{item.itemId} and inventory_id = #{inventoryId}
+</delete>
+
 </mapper>

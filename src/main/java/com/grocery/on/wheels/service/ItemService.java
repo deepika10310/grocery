@@ -7,4 +7,6 @@ import com.grocery.on.wheels.model.Item;
 public interface ItemService {
 
 	public void addItem(Item item, String inventoryId, MultipartFile iconFile, MultipartFile qrFile);
+
+	public void editItem(Item item, String inventoryId, MultipartFile iconFile, MultipartFile qrFile);
 }

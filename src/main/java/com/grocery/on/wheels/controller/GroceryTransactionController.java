@@ -32,4 +32,5 @@ public class GroceryTransactionController {
 	public String sellVan(@RequestBody VanPurchaseTransaction vanPurchaseTransaction) {
 		return transactionService.sellVan(vanPurchaseTransaction);
 	}
+	
 }

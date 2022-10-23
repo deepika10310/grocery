@@ -4,6 +4,8 @@ public class VanPurchaseTransactionItem {
 	private String itemId;
 	private int itemCount;
 	private String mrp;
+	private String cp;
+	private String sp;
 	public String getItemId() {
 		return itemId;
 	}
@@ -21,5 +23,17 @@ public class VanPurchaseTransactionItem {
 	}
 	public void setMrp(String mrp) {
 		this.mrp = mrp;
+	}
+	public String getCp() {
+		return cp;
+	}
+	public void setCp(String cp) {
+		this.cp = cp;
+	}
+	public String getSp() {
+		return sp;
+	}
+	public void setSp(String sp) {
+		this.sp = sp;
 	}
 }

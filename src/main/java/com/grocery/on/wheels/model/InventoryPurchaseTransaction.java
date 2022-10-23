@@ -9,8 +9,8 @@ public class InventoryPurchaseTransaction extends Invoice {
 	private String supplierId;
 	private String discount;
 	private String otherCharges;
-	private String transactionType;//INVOICE/CANCEL/REFUND
-	private String transactionStatus;//SUCCESS/FAIL
+	private String transactionType;//CREDIT/DEBIT
+	private String transactionStatus;//INVOICE/CANCEL/REFUND
 	private Date transactionDate;
 	public String getInventoryId() {
 		return inventoryId;

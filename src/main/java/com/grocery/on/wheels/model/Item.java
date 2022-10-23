@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.grocery.on.wheels.config.GroceryPropertyConfig;
 
 @Component
@@ -35,6 +36,9 @@ public class Item {
 	private String itemIcon;
 	private String itemQrBarCode;
 	private List<ItemPrice> itemPrice;
+	
+	@JsonIgnore
+	private String vanId;
 	public String getDomain() {
 		System.out.println(s3Domain + "  " + config);
 		return domain;
@@ -97,5 +101,10 @@ public class Item {
 	public void setItemPrice(List<ItemPrice> itemPrice) {
 		this.itemPrice = itemPrice;
 	}
-	
+	public String getVanId() {
+		return vanId;
+	}
+	public void setVanId(String vanId) {
+		this.vanId = vanId;
+	}
 }

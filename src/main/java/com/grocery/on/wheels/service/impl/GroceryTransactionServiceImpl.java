@@ -1,7 +1,5 @@
 package com.grocery.on.wheels.service.impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,7 @@ import com.grocery.on.wheels.model.InventoryPurchaseTransaction;
 import com.grocery.on.wheels.model.Invoice;
 import com.grocery.on.wheels.model.VanPurchaseTransaction;
 import com.grocery.on.wheels.service.GroceryTransactionService;
+import com.grocery.on.wheels.util.GroceryUtil;
 
 @Service
 @Transactional
@@ -20,8 +19,6 @@ public class GroceryTransactionServiceImpl implements GroceryTransactionService 
 
 	@Autowired
 	GroceryTransactionMapper transactionMapper;
-	
-	DateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
 	
 	private String generateInvoiceId(String invoceType) {
 		String prfeix = "";
@@ -37,7 +34,7 @@ public class GroceryTransactionServiceImpl implements GroceryTransactionService 
 				prfeix = "INV_";
 				break;
 		}
-		return prfeix + "" + df.format(date);
+		return prfeix + "" + GroceryUtil.getFormatDate(date);
 	}
 	
 	private void saveInvoice(String invoiceId, String invoiceName) {
@@ -55,6 +52,7 @@ public class GroceryTransactionServiceImpl implements GroceryTransactionService 
 		transactionMapper.updateInventoryStock(inventoryPurchaseTransaction);
 		return invoiceId;
 	}
+	
 
 
 	@Override
@@ -63,6 +61,8 @@ public class GroceryTransactionServiceImpl implements GroceryTransactionService 
 		vanPurchaseTransaction.setInvoiceId(invoiceId);
 		saveInvoice(invoiceId, vanPurchaseTransaction.getInvoiceName());
 		transactionMapper.saveVanTransactionInfo(vanPurchaseTransaction);
+		transactionMapper.addVanItemMap(vanPurchaseTransaction);
+		transactionMapper.updateInventoryStockSale(vanPurchaseTransaction);
 		transactionMapper.updateVanStockPurchase(vanPurchaseTransaction);
 		return invoiceId;
 	}

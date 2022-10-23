@@ -21,15 +21,12 @@ public class ItemController {
 	@Autowired
 	ItemService itemService;
 	
-	@PostMapping(
-            path = "/add",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-	public void addItem(@RequestParam("item") String itemJson,
-						@RequestParam("inventoryId") String inventoryId,
-                                         @RequestParam("icon") MultipartFile iconFile,
-                                         @RequestParam("qrCode") MultipartFile qrFile
+	@PostMapping(path = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public void addItem(@RequestParam(value="item", required = true) String itemJson,
+						@RequestParam(value="inventoryId", required = true) String inventoryId,
+                                         @RequestParam(value="icon", required = false) MultipartFile iconFile,
+                                         @RequestParam(value="qrCode", required = false) MultipartFile qrFile
                                          ) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -40,6 +37,23 @@ public class ItemController {
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		
+	}
+
+	@PostMapping(path = "/edit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public void editItem(@RequestParam(value="item", required = true) String itemJson,
+						@RequestParam(value="inventoryId", required = true) String inventoryId,
+                                         @RequestParam(value="icon", required = false) MultipartFile iconFile,
+                                         @RequestParam(value="qrCode", required = false) MultipartFile qrFile
+                                         ) {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			Item item = mapper.readValue(itemJson, Item.class);
+			itemService.editItem(item, inventoryId, iconFile, qrFile);
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 	}
 }

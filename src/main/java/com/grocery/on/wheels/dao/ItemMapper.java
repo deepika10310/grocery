@@ -14,4 +14,12 @@ public interface ItemMapper {
 
 	void addInvItemMap(@Param("inventoryId") String inventoryId, @Param("item") Item item);
 
+	void editItem(@Param("item") Item item, @Param("iconFileUpdate") boolean iconFileUpdate, @Param("qrFileUpdate") boolean qrFileUpdate);
+
+	void editItemPrice(Item item);
+
+	void deleteItemPrice(Item item);
+
+	void deleteInvItemMap(@Param("inventoryId") String inventoryId, @Param("item") Item item);
+
 }
