@@ -3,7 +3,7 @@ package com.grocery.on.wheels.model;
 import java.util.Date;
 import java.util.List;
 
-public class InventoryPurchaseTransaction extends Invoice {
+public class InventoryPurchaseTransaction extends Invoice implements ResponseObject {
 	private String inventoryId;
 	private List<InventoryPurchaseTransactionItem> purchaseTransItem;
 	private String supplierId;

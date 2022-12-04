@@ -1,5 +1,4 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.grocery.on.wheels.dao.ItemMapper">
@@ -8,28 +7,28 @@
 	 VALUES (#{itemId}, #{itemName}, #{itemCode}, #{itemUnit}, #{itemUnitCount}, #{itemIcon}, #{itemQrBarCode}, now(), 'CID', now(), 'UID');
 </insert>
 
-<insert id="addItemPrice" parameterType="com.grocery.on.wheels.model.Item">
-	INSERT INTO item_price_map (item_id, mrp, cp, sp)
-	 VALUES 
-	 <foreach collection="itemPrice" item="price" index="index" open="(" separator="),("  close=")">
+<insert id="addItemPrice">
+	INSERT IGNORE INTO item_price_map (item_price_id,item_id, mrp, cp, sp)
+	 VALUES (
+			#{itemPrice.itemPriceId},
             #{itemId},
-            #{price.mrp},
-            #{price.cp},
-            #{price.sp}
-       </foreach>
-	
+            #{itemPrice.mrp},
+            #{itemPrice.cp},
+            #{itemPrice.sp}
+			);	
 </insert>
 
 <insert id="addInvItemMap">
-INSERT INTO inventory_item_map (inventory_id, item_id, mrp, item_count) 
+INSERT IGNORE INTO inventory_item_map (inventory_id, item_price_id, exp_dt, item_count, purchase_pending, sale_pending)
 VALUES 
- <foreach collection="item.itemPrice" item="price" index="index" open="(" separator="),("  close=")">
+ <foreach collection="itemPriceExp" item="priceExp" index="index" open="(" separator="),("  close=")">
      #{inventoryId},
-     #{item.itemId},
-     #{price.mrp},
-     #{price.itemCount}
+     #{itemPriceId},
+     #{priceExp.expDate},
+     #{priceExp.itemCount},
+	 #{priceExp.purchase_pending},
+	 #{priceExp.sale_pending}
 </foreach>
-
 </insert>
 
 <update id="editItem">
@@ -49,12 +48,23 @@ VALUES
 	where item_id = #{item.itemId}
 </update>
 
-<delete id="deleteItemPrice" parameterType="com.grocery.on.wheels.model.Item">
-	delete from item_price_map where item_id = #{itemId} 
+<delete id="deleteItemPrice" parameterType="com.grocery.on.wheels.model.ItemPrice">
+	delete from item_price_map where item_price_id in 
+	<foreach item="price" collection="itemPrices" separator="," open="(" close=")">
+        #{price.itemPriceId}
+    </foreach>
 </delete>
 
-<delete id="deleteInvItemMap">
-	delete from inventory_item_map where item_id = #{item.itemId} and inventory_id = #{inventoryId}
+<delete id="deleteExpiry" parameterType="com.grocery.on.wheels.model.ItemPrice">
+	delete from item_exp_map where item_price_id in 
+	<foreach item="price" collection="itemPrices" separator="," open="(" close=")">
+        #{price.itemPriceId}
+    </foreach>
+</delete>
+
+<delete id="clearItem">
+delete from `item_price_map`;
+delete from `item_info`;
 </delete>
 
 </mapper>

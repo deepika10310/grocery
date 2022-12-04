@@ -14,4 +14,6 @@ public interface VanMapper {
 
 	List<Item> getItems(String vanId);
 
+	void clearVan();
+
 }

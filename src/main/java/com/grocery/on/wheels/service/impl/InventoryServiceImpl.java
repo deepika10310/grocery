@@ -29,13 +29,17 @@ public class InventoryServiceImpl implements InventoryService {
 
 	@Override
 	public List<Item> getItems(String inventoryId) {
-		System.out.println("propertyConfig :: " + propertyConfig.getS3Domain());
 		return inventoryMapper.getItems(inventoryId);
 	}
 
 	@Override
 	public List<Item> getItemsByName(String inventoryId, String searchText) {
 		return inventoryMapper.getItemsByName(inventoryId, searchText);
+	}
+
+	@Override
+	public void clearInventory() {
+		inventoryMapper.clearInventory();
 	}
 
 }

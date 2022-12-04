@@ -13,4 +13,6 @@ public interface InventoryService {
 
 	List<Item> getItemsByName(String inventoryId, String searchText);
 
+	void clearInventory();
+
 }

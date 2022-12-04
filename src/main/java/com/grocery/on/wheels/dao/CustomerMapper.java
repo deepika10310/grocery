@@ -17,5 +17,7 @@ public interface CustomerMapper {
 
 	List<Customer> findCustomers(@Param("searchText") String searchText);
 
+	void clearCustomer();
+
 	
 }

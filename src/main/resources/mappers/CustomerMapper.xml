@@ -41,6 +41,11 @@
 	            #{custAddress.customerMob}
 	       </foreach>
 	</insert>
+	
+	<delete id="clearCustomer">
+		delete from customer_address;
+		delete from customer;
+	</delete>
 		
 	
 </mapper>

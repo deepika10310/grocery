@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.grocery.on.wheels.model.BaseRsp;
 import com.grocery.on.wheels.model.Customer;
 import com.grocery.on.wheels.service.CustomerService;
 
@@ -25,8 +26,9 @@ public class CustomerController {
 	}
 	
 	@PostMapping("/add")
-	public void addCustomer(@RequestBody Customer customer) {
+	public BaseRsp addCustomer(@RequestBody Customer customer) {
 		customerService.addCustomer(customer);
+		return new BaseRsp("success", customer);
 	}
 	
 	
@@ -34,4 +36,11 @@ public class CustomerController {
 	public List<Customer> findCustomers(@PathVariable("searchText") String searchText) {
 		return customerService.findCustomers(searchText);
 	}
+	
+	@PostMapping("/clear_customer//{inv_id}")
+	public BaseRsp clearCustomer(@PathVariable("inv_id") String inventoryId) {
+		customerService.clearCustomer();
+		return new BaseRsp("success", "deleted");
+	}
+	
 }

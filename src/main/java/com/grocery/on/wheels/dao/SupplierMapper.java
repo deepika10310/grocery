@@ -15,4 +15,6 @@ public interface SupplierMapper {
 
 	List<Supplier> findSuppliers(String searchText);
 
+	void clearSupplier();
+
 }

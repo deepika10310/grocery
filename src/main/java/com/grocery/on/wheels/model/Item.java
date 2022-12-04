@@ -5,17 +5,24 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
+import org.springframework.core.env.Environment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.grocery.on.wheels.config.GroceryPropertyConfig;
 
-@Component
 @PropertySource("classpath:application.properties")
-public class Item {
+public class Item implements ResponseObject {
 	
 	@Autowired
 	GroceryPropertyConfig config;
+	
+	@Autowired
+	private Environment env;
+	
+	public Item() {
+		super();
+		System.out.println("item constructor...." + this + " config ::: " + config + " env ::: " + env);
+	}
 
 	@Value( "${logging.level.root}" )
 	public String s3Domain;

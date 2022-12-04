@@ -6,6 +6,8 @@ public class VanPurchaseTransactionItem {
 	private String mrp;
 	private String cp;
 	private String sp;
+	private String expDate;
+	private String itemPriceId;
 	public String getItemId() {
 		return itemId;
 	}
@@ -35,5 +37,17 @@ public class VanPurchaseTransactionItem {
 	}
 	public void setSp(String sp) {
 		this.sp = sp;
+	}
+	public String getItemPriceId() {
+		return itemPriceId;
+	}
+	public void setItemPriceId(String itemPriceId) {
+		this.itemPriceId = itemPriceId;
+	}
+	public String getExpDate() {
+		return expDate;
+	}
+	public void setExpDate(String expDate) {
+		this.expDate = expDate;
 	}
 }

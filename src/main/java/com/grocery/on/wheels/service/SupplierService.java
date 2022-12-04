@@ -11,5 +11,7 @@ public interface SupplierService {
 	void addSupplier(Supplier supplier);
 
 	List<Supplier> findSuppliers(String searchText);
+
+	void clearSupplier();
 	
 }

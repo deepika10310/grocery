@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.grocery.on.wheels.model.BaseRsp;
 import com.grocery.on.wheels.model.Supplier;
 import com.grocery.on.wheels.service.SupplierService;
 
@@ -26,14 +27,19 @@ public class SupplierController {
 	}
 	
 	@PostMapping("/add")
-	public void addSupplier(@RequestBody Supplier supplier) {
+	public BaseRsp addSupplier(@RequestBody Supplier supplier) {
 		supplierService.addSupplier(supplier);
+		return new BaseRsp("success", supplier);
 	}
-	
 	
 	@GetMapping("/list/{searchText}")
 	public List<Supplier> findSuppliers(@PathVariable("searchText") String searchText) {
 		return supplierService.findSuppliers(searchText);
 	}
 	
+	@PostMapping("clear_supplier/{inv_id}")
+	public BaseRsp clearSupplier(@PathVariable("inv_id") String inventoryId) {
+		supplierService.clearSupplier();
+		return new BaseRsp("success", "delete");
+	}
 }

@@ -3,10 +3,10 @@ package com.grocery.on.wheels.model;
 import java.util.Date;
 import java.util.List;
 
-public class VanPurchaseTransaction {
+public class VanPurchaseTransaction extends Invoice implements ResponseObject {
 	private String inventoryId;
-	private String invoiceId;
-	private String invoiceName;
+	//private String invoiceId;
+	//private String invoiceName;
 	private String vanId;
 	private List<VanPurchaseTransactionItem> purchaseTransItem;
 	private String customerId;
@@ -15,12 +15,11 @@ public class VanPurchaseTransaction {
 	private String transactionType;//CREDIT/DEBIT
 	private String transactionStatus;//INVOICE/CANCEL/REFUND
 	private Date transactionDate;
-	public String getInvoiceId() {
-		return invoiceId;
-	}
-	public void setInvoiceId(String invoiceId) {
-		this.invoiceId = invoiceId;
-	}
+
+	/*
+	 * public String getInvoiceId() { return invoiceId; } public void
+	 * setInvoiceId(String invoiceId) { this.invoiceId = invoiceId; }
+	 */
 	public String getVanId() {
 		return vanId;
 	}
@@ -63,12 +62,11 @@ public class VanPurchaseTransaction {
 	public void setTransactionDate(Date transactionDate) {
 		this.transactionDate = transactionDate;
 	}
-	public String getInvoiceName() {
-		return invoiceName;
-	}
-	public void setInvoiceName(String invoiceName) {
-		this.invoiceName = invoiceName;
-	}
+
+	/*
+	 * public String getInvoiceName() { return invoiceName; } public void
+	 * setInvoiceName(String invoiceName) { this.invoiceName = invoiceName; }
+	 */
 	public String getInventoryId() {
 		return inventoryId;
 	}

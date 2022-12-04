@@ -25,4 +25,8 @@
 	    supplier_mob like #{supplierMobile}
 	</select>
 	
+	<delete id="clearSupplier">
+		delete from supplier;
+	</delete>
+	
 </mapper>

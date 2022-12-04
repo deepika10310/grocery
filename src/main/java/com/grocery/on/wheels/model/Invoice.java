@@ -6,6 +6,7 @@ public class Invoice {
 	private String invoiceId;
 	private String invoiceName;
 	private Date date;
+	private String invoiceUrl;
 	
 	public Invoice() {
 		
@@ -32,5 +33,13 @@ public class Invoice {
 	}
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public String getInvoiceUrl() {
+		return invoiceUrl;
+	}
+
+	public void setInvoiceUrl(String invoiceUrl) {
+		this.invoiceUrl = invoiceUrl;
 	}
 }

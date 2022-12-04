@@ -1,5 +1,4 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.grocery.on.wheels.dao.VanMapper">
@@ -14,23 +13,37 @@
 		<result property="itemIcon" column="itemIcon"/>
 		<result property="itemQrBarCode" column="itemQrBarCode"/>
 		<collection property="itemPrice" javaType="ArrayList" ofType="com.grocery.on.wheels.model.ItemPrice">
+			<id property="itemPriceId" column="itemPriceId" />
 			<result property="mrp" column="mrp"/>
 			<result property="cp" column="cp"/>
 			<result property="sp" column="sp"/>
-			<result property="itemCount" column="itemCount"/>
+			<collection property="priceExpiry" ofType="com.grocery.on.wheels.model.ItemPriceExpiry" javaType="ArrayList" >
+				<id property="expDate" column="expDate" />
+				<result property="itemCount" column="itemCount" />
+				<result property="purchasePending" column="purchasePending" />
+				<result property="salePending" column="salePending" />
+			</collection>
 		</collection>
 	</resultMap>
 	<select id="getVans" resultType="com.grocery.on.wheels.model.Van" parameterType="String">
 		select van_id as vanId, van_name as vanName from van where inventory_id = #{inventoryId}
 	</select>
 	<select id="getItems" resultMap="vanItemMap" parameterType="String">
-		SELECT vim.van_id as vanId, vim.item_id as itemId,
-			vim.count as itemCount, ii.item_name as itemName, ii.item_code as itemCode,
+		SELECT vim.van_id as vanId, ipm.item_id as itemId,
+			vim.item_count as itemCount, ii.item_name as itemName, ii.item_code as itemCode,
 			ii.item_unit as itemUnit, ii.item_unit_count as itemUnitCount,
 			ii.item_icon as itemIcon, ii.item_qrbar_code as itemQrBarCode,
-			ipm.mrp as mrp, ipm.cp as cp, ipm.sp as sp
+			ipm.mrp as mrp, ipm.cp as cp, ipm.sp as sp, vim.exp_dt as expDate, 
+			ipm.item_price_id as itemPriceId, vim.purchase_pending as purchasePending, 
+			vim.sale_pending as salePending
 		FROM van_item_map vim
-			join item_info ii on (vim.item_id = ii.item_id and vim.van_id = #{vanID})
-			join item_price_map ipm on (ii.item_id = ipm.item_id and vim.mrp = ipm.mrp)
+		    join item_price_map ipm on (vim.item_price_id = ipm.item_price_id 
+			and vim.van_id = #{vanId} and (vim.item_count > 0 or vim.exp_dt > date_sub(now(), interval 1 day)))
+        	join item_info ii on (ipm.item_id = ii.item_id);
 	</select>
+	
+	<delete id="clearVan">
+		delete from van_item_map;
+		delete from van;
+	</delete>
 </mapper>

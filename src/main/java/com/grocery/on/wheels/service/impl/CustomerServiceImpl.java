@@ -36,4 +36,9 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerMapper.findCustomers("%" + searchText + "%");
 	}
 
+	@Override
+	public void clearCustomer() {
+		customerMapper.clearCustomer();
+	}
+
 }

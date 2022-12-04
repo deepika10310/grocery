@@ -28,4 +28,9 @@ public class VanServiceImpl implements VanService {
 		return vanMapper.getItems(vanId);
 	}
 
+	@Override
+	public void clearVan() {
+		vanMapper.clearVan();
+	}
+
 }

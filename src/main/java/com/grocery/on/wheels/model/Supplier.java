@@ -1,6 +1,6 @@
 package com.grocery.on.wheels.model;
 
-public class Supplier {
+public class Supplier implements ResponseObject {
 	private String supplierId;
 	private String supplierName;
 	private String supplierMobile;

@@ -1,5 +1,4 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.grocery.on.wheels.dao.InventoryMapper">
@@ -15,10 +14,16 @@
 		<result property="itemIcon" column="itemIcon"/>
 		<result property="itemQrBarCode" column="itemQrBarCode"/>
 		<collection property="itemPrice" javaType="ArrayList" ofType="com.grocery.on.wheels.model.ItemPrice">
+			<id property="itemPriceId" column="itemPriceId"/>
 			<result property="mrp" column="mrp"/>
 			<result property="cp" column="cp"/>
 			<result property="sp" column="sp"/>
-			<result property="itemCount" column="itemCount"/>
+			<collection property="priceExpiry" ofType="com.grocery.on.wheels.model.ItemPriceExpiry" javaType="ArrayList" >
+				<id property="expDate" column="expDate" />
+				<result property="itemCount" column="itemCount" />
+				<result property="purchasePending" column="purchasePending" />
+				<result property="salePending" column="salePending" />
+			</collection>
 		</collection>
 	</resultMap>
 
@@ -29,26 +34,39 @@
 
 	<select id="getItems" resultMap="itemMap"
 		parameterType="String">
-		SELECT iim.inventory_id as inventoryId, iim.item_id as itemId,
+		SELECT 
+		iim.inventory_id as inventoryId, ipm.item_id as itemId,
 		iim.item_count as itemCount, ii.item_name as itemName, ii.item_code as itemCode,
 		ii.item_unit as itemUnit, ii.item_unit_count as itemUnitCount,
 		ii.item_icon as itemIcon, ii.item_qrbar_code as itemQrBarCode,
-		ipm.mrp as mrp, ipm.cp as cp, ipm.sp as sp
+		ipm.mrp as mrp, ipm.cp as cp, ipm.sp as sp, iim.exp_dt as expDate,
+        ipm.item_price_id as itemPriceId, iim.purchase_pending as purchasePending,
+		iim.sale_pending as salePending
 		FROM inventory_item_map iim
-		join item_info ii on (iim.item_id = ii.item_id and iim.inventory_id = #{inventoryId})
-		join item_price_map ipm on (ii.item_id = ipm.item_id and iim.mrp = ipm.mrp)
+        join item_price_map ipm on (iim.item_price_id = ipm.item_price_id 
+		and iim.inventory_id = #{inventoryId} and (iim.exp_dt > date_sub(now(), interval 1 day) or iim.item_count > 0))
+		join item_info ii on (ipm.item_id = ii.item_id );
 	</select>
 	
 	<select id="getItemsByName" resultMap="itemMap">
-		SELECT iim.inventory_id as inventoryId, iim.item_id as itemId,
+		iim.inventory_id as inventoryId, ipm.item_id as itemId,
 		iim.item_count as itemCount, ii.item_name as itemName, ii.item_code as itemCode,
 		ii.item_unit as itemUnit, ii.item_unit_count as itemUnitCount,
 		ii.item_icon as itemIcon, ii.item_qrbar_code as itemQrBarCode,
-		ipm.mrp as mrp, ipm.cp as cp, ipm.sp as sp
+		ipm.mrp as mrp, ipm.cp as cp, ipm.sp as sp, iim.exp_dt as expDate,
+        ipm.item_price_id as itemPriceId, iim.purchase_pending as purchasePending,
+		iim.sale_pending as salePending
 		FROM inventory_item_map iim
-		join item_info ii on (iim.item_id = ii.item_id and iim.inventory_id = #{inventoryId}
-		and ii.item_name like #{searchText})
-		join item_price_map ipm on (ii.item_id = ipm.item_id and iim.mrp = ipm.mrp)
+		join item_price_map ipm on (iim.item_price_id = ipm.item_price_id 
+		and iim.inventory_id = #{inventoryId} and (iim.item_count > 0 or iim.exp_dt > date_sub(now(), interval 1 day)))
+		join item_info ii on (ipm.item_id = ii.item_id and ii.item_name like #{searchText})		
+		where (now() > iim.exp_dt and iim.item_count = 0);
 	</select>
+	
+	<delete id="clearInventory">
+		delete from inventory_invoice;
+		delete from inventory_item_map;
+		delete from inventory;
+	</delete>
 	
 </mapper>

@@ -12,4 +12,6 @@ public interface CustomerService {
 
 	List<Customer> findCustomers(String searchText);
 
+	void clearCustomer();
+
 }

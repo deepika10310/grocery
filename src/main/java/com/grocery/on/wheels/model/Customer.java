@@ -2,7 +2,7 @@ package com.grocery.on.wheels.model;
 
 import java.util.List;
 
-public class Customer {
+public class Customer implements ResponseObject {
 	private String customerId;
 	private String customerName;
 	private List<CustomerAddress> address;

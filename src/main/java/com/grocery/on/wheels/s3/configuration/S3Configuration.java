@@ -21,7 +21,6 @@ public class S3Configuration {
     private String secretKey;
 	
 	public S3Configuration() {
-		logger.debug("endpointUrl " + endpointUrl + " bucketName " + bucketName + " accessKey " + accessKey + " secretKey " + secretKey);
 	}
 
 	public String getEndpointUrl() {
@@ -55,6 +54,4 @@ public class S3Configuration {
 	public void setSecretKey(String secretKey) {
 		this.secretKey = secretKey;
 	}
-	
-	
 }

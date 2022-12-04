@@ -11,4 +11,6 @@ public interface VanService {
 
 	List<Item> getItems(String vanId);
 
+	void clearVan();
+
 }

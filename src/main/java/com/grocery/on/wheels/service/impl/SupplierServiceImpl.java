@@ -35,4 +35,9 @@ public class SupplierServiceImpl implements SupplierService {
 		return supplierMapper.findSuppliers(searchText);
 	}
 
+	@Override
+	public void clearSupplier() {
+		supplierMapper.clearSupplier();
+	}
+
 }

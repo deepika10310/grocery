@@ -32,7 +32,7 @@ public class UserController {
 	@PostMapping("/users")
 	public User createUser(@RequestBody User user) {
 		if (userRepository.findById(user.getId()) == null) {
-			int id = userRepository.insert(user);
+			userRepository.insert(user);
 			return userRepository.findById(user.getId());
 		}
 		return null;

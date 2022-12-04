@@ -16,4 +16,6 @@ public interface InventoryMapper {
 
 	public List<Item> getItemsByName(@Param("inventoryId") String inventoryId,
 			@Param("searchText")  String searchText);
+
+	public void clearInventory();
 }
